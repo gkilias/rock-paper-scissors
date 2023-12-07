@@ -12,18 +12,58 @@ function getPlayerChoice(){
     return playerChoice
 }
 
+const container = document.querySelector(".container")
+
+const roundWin = document.querySelector(".roundWin")
+
+const winner = document.querySelector(".winner")
+
+let playerChoice = ""
+
+let gameScore = 0
+let playerScore = 0
+let computerScore = 0
+
+
+container.addEventListener("click", function(e){
+    
+    if(!(e.target.nodeName === "BUTTON")){ //event handler in case of clicking on padding
+        return
+    }
+
+    playerChoice = e.target.id
+
+    matchScore.textContent = `The gamescore is ${playerScore} - ${computerScore}.`
+
+    roundWin.textContent = playRound(playerChoice, getComputerChoice())
+
+    if (playerScore === 5){
+        winner.textContent = `Congratulation you won with a score of ${playerScore} - ${computerScore}.`
+        }else if(computerScore === 5){
+            winner.textContent = `You lost with a score of ${playerScore} - ${computerScore}.`
+        }
+})
+
+const matchScore = document.querySelector(".score")
+matchScore.textContent = `The gamescore is ${playerScore} - ${computerScore}.`
+
+
+
 function playRound(playerSelection, computerSelection){
 
+    gameScore++
     if(
         (playerSelection === "rock" && computerSelection === "scissors") ||
         (playerSelection === "paper" && computerSelection === "rock") ||
         (playerSelection === "scissors" && computerSelection === "paper")){
-        return "You Win! Rock beats Scissors."
+            playerScore++
+        return `You Win! ${playerSelection} beats ${computerSelection}.`
     } else if(
         (playerSelection === "rock" && computerSelection === "paper") ||
         (playerSelection === "paper" && computerSelection === "scissors") ||
         (playerSelection === "scissors" && computerSelection === "rock")){
-        return "You Lose! Paper beats Rock."
+            computerScore++
+        return `You Lose! ${computerSelection} beats ${playerSelection}.`
     } else if(playerSelection === computerSelection){
         return "Tie round will be replayed."
     }
@@ -34,9 +74,6 @@ function game(){
     let playerScore = 0
     let computerScore = 0
     while(gameScore < 3){
-
-        let playerSelection = getPlayerChoice().toLowerCase()
-        let computerSelection = getComputerChoice().toLowerCase()
 
         let result = playRound(playerSelection, computerSelection)
 
